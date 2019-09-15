@@ -71,7 +71,7 @@ func GetFieldVal(val reflect.Value) (castValue interface{}, err error) {
 
 //IsDefault Check whether value is default
 func IsDefault(val reflect.Value) (isDefault bool) {
-	if val.IsNil() || !val.IsValid() {
+	if !val.IsValid() {
 		isDefault = true
 	} else {
 		zero := reflect.Zero(val.Type())

@@ -10,7 +10,7 @@ import (
 func StructTagValue(input interface{}, tag string) (fields map[string]interface{}, err error) {
 
 	var refObj reflect.Value
-	tag = GetAVal(tag, SQLTag)
+	tag = GetAVal(tag, JSONTag)
 	fields = make(map[string]interface{})
 	refObj, err = getStructRefObj(input)
 
@@ -56,6 +56,7 @@ func getStructRefObj(input interface{}) (refObj reflect.Value, err error) {
 //setFiledVal will set struct current field value
 func setFiledVal(tag string, refType reflect.StructField, refField reflect.Value,
 	fields map[string]interface{}) (err error) {
+
 	if col, exists := refType.Tag.Lookup(tag); exists {
 		isDef := IsDefault(refField)
 		if col == "-" ||
