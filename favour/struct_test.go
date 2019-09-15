@@ -30,6 +30,7 @@ func TestStructTag(t *testing.T) {
 		Age    float64 `sql:"age,omitempty"`
 		Number int     `sql:"number"`
 		Ignore string  `sql:"-"`
+		Value  int     `sql:"value,omitempty"`
 	}
 
 	bSQL := basicSQL{Name: "Mayur", Age: 24, Number: 123123, Ignore: "Ignore"}
@@ -40,6 +41,7 @@ func TestStructTag(t *testing.T) {
 	a.Equal(24.0, v["age"])
 	a.Equal(int64(123123), v["number"])
 	a.Nil(v["ignore"])
+	a.Nil(v["value"])
 }
 
 func TestEmbededStruct(t *testing.T) {

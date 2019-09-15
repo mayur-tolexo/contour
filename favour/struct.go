@@ -59,8 +59,7 @@ func setFiledVal(tag string, refType reflect.StructField, refField reflect.Value
 
 	if col, exists := refType.Tag.Lookup(tag); exists {
 		isDef := IsDefaultVal(refField)
-		if col == "-" ||
-			(strings.Contains(col, ",omitempty") && isDef) {
+		if col == "-" || (strings.Contains(col, ",omitempty") && isDef) {
 			return
 		}
 		if tag == GORMTag {
