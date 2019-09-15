@@ -58,7 +58,7 @@ func setFiledVal(tag string, refType reflect.StructField, refField reflect.Value
 	fields map[string]interface{}) (err error) {
 
 	if col, exists := refType.Tag.Lookup(tag); exists {
-		isDef := IsDefault(refField)
+		isDef := IsDefaultVal(refField)
 		if col == "-" ||
 			(strings.Contains(col, ",omitempty") && isDef) {
 			return

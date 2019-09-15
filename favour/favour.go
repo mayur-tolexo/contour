@@ -69,8 +69,8 @@ func GetFieldVal(val reflect.Value) (castValue interface{}, err error) {
 	return
 }
 
-//IsDefault Check whether value is default
-func IsDefault(val reflect.Value) (isDefault bool) {
+//IsDefaultVal Check whether value is default
+func IsDefaultVal(val reflect.Value) (isDefault bool) {
 	if !val.IsValid() {
 		isDefault = true
 	} else {
@@ -83,9 +83,16 @@ func IsDefault(val reflect.Value) (isDefault bool) {
 			if val.Len() == 0 {
 				isDefault = true
 			}
-		} else if val.Interface() == zero.Interface() {
+		} else if fKind == reflect.Struct || fKind == reflect.Ptr {
 			isDefault = reflect.DeepEqual(val, zero)
+		} else if val.Interface() == zero.Interface() {
+			isDefault = true
 		}
 	}
 	return
+}
+
+//IsDefault will check is default value of given interface
+func IsDefault(v interface{}) bool {
+	return IsDefaultVal(reflect.ValueOf(v))
 }
