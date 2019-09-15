@@ -31,10 +31,8 @@ func StructTagValue(input interface{}, tag string) (fields map[string]interface{
 					break
 				}
 				MergeMap(fields, embdFields)
-			} else {
-				if err = setFiledVal(tag, refType, refField, fields); err != nil {
-					break
-				}
+			} else if err = setFiledVal(tag, refType, refField, fields); err != nil {
+				break
 			}
 		}
 	}
