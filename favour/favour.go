@@ -3,6 +3,8 @@ package favour
 import (
 	"errors"
 	"reflect"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -14,6 +16,7 @@ const (
 	DefaultTag = "default"
 	Null       = "null"
 )
+const packageName = "github.com/mayur-tolexo/"
 
 //MergeMap will merge two maps
 func MergeMap(a, b map[string]interface{}) {
@@ -95,4 +98,29 @@ func IsDefaultVal(val reflect.Value) (isDefault bool) {
 //IsDefault will check is default value of given interface
 func IsDefault(v interface{}) bool {
 	return IsDefaultVal(reflect.ValueOf(v))
+}
+
+//StackTrace : Get function name, file name and line no of the caller function
+//Depth is the value from which it will start searching in the stack
+func StackTrace(depth int) (funcName string, file string, line int) {
+	var (
+		ok bool
+		pc uintptr
+	)
+	for i := depth; ; i++ {
+		if pc, file, line, ok = runtime.Caller(i); ok {
+			if strings.Contains(file, packageName) {
+				continue
+			}
+			fileName := strings.Split(file, "github.com")
+			if len(fileName) > 1 {
+				file = fileName[1]
+			}
+			_, funcName = packageFuncName(pc)
+			break
+		} else {
+			break
+		}
+	}
+	return
 }
