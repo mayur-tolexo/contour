@@ -1,11 +1,12 @@
 package favour
 
 import (
-	"errors"
 	"reflect"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/mayur-tolexo/flaw"
 )
 
 //struct tags
@@ -67,7 +68,7 @@ func GetFieldVal(val reflect.Value) (castValue interface{}, err error) {
 	case reflect.Map, reflect.Slice, reflect.Struct, reflect.Interface:
 		castValue = val.Interface()
 	default:
-		err = errors.New("GetFieldVal: Invalid Filed Kind")
+		err = flaw.CustomError("Invalid field kind")
 	}
 	return
 }
@@ -120,6 +121,22 @@ func StackTrace(depth int) (funcName string, file string, line int) {
 			break
 		} else {
 			break
+		}
+	}
+	return
+}
+
+//packageFuncName : Package and function name from package counter
+func packageFuncName(pc uintptr) (packageName string, funcName string) {
+	if f := runtime.FuncForPC(pc); f != nil {
+		funcName = f.Name()
+		if ind := strings.LastIndex(funcName, "/"); ind > 0 {
+			packageName += funcName[:ind+1]
+			funcName = funcName[ind+1:]
+		}
+		if ind := strings.Index(funcName, "."); ind > 0 {
+			packageName += funcName[:ind]
+			funcName = funcName[ind+1:]
 		}
 	}
 	return

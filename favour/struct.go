@@ -1,9 +1,10 @@
 package favour
 
 import (
-	"errors"
 	"reflect"
 	"strings"
+
+	"github.com/mayur-tolexo/flaw"
 )
 
 //StructTagValue will return struct model tag field and value from specific tag
@@ -46,7 +47,7 @@ func getStructRefObj(input interface{}) (refObj reflect.Value, err error) {
 		refObj = refObj.Elem()
 	}
 	if refObj.Kind() != reflect.Struct || !refObj.IsValid() {
-		err = errors.New("No a struct")
+		err = flaw.CustomError("Not a struct")
 	}
 	return
 }
