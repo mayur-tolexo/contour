@@ -23,6 +23,11 @@ var (
 	slaveContainer   = "database.slaves"
 )
 
+//LogMode will enable logging
+func LogMode(enable bool) {
+	StartLogging = enable
+}
+
 func init() {
 	debuggerStatus = make(map[*pg.DB]bool)
 	dbPostgresWrite = make(map[string]*pg.DB)
